@@ -128,8 +128,6 @@ def knnPrediction(sampleList, targetList, predictingSampleList):
 
     return y_neigh, y_modelTraining
 
-
-
 def plotGraph(trainingSample, trainingTarget, predictingSample, predictingTarget, trainingModelTarget):
     import matplotlib.pyplot as plt
     lw = 2
@@ -137,8 +135,8 @@ def plotGraph(trainingSample, trainingTarget, predictingSample, predictingTarget
     xSample = [i+startMth for i in range(len(trainingSample))]
     xPredict = [i+1 for i in range(xSample[-1], xSample[-1] + len(predictingSample))]
     plt.scatter(xSample, trainingTarget, color='darkorange', label='Data Sample')
-    plt.plot(xSample, trainingModelTarget, color='c', lw=lw, label='RBF model')
-    plt.scatter(xPredict, predictingTarget, color='navy', lw=lw, label='RBF prediction')
+    plt.plot(xSample, trainingModelTarget, color='c', lw=lw, label='KNN model')
+    plt.scatter(xPredict, predictingTarget, color='navy', lw=lw, label='KNN prediction')
     plt.xlabel('Months')
     plt.ylabel('Sales')
     plt.title('Support Vector Regression')
