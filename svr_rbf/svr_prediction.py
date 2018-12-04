@@ -1,17 +1,17 @@
 import sys
 
-def printResult(predictingSample, predictingTarget, testingTarget):
+def printResult(predictingSample, predictingTarget, actualTarget):
     total = 0.0
     size = len(predictingSample)
     print("Sale prediction in {} months: ".format(size))
-    print("{}\t\t{}\t{}\t{}".format("Mth,Yr", "Sale prediction", "Actual Value", "%"))
+    print("{}\t{}\t\t{}\t\t{}".format("Mth,Yr", "Sale prediction", "Actual Value", "%"))
     for i in range(size):
         percent = 0.0
-        if(predictingTarget[i] < testingTarget[i]):
-            percent = predictingTarget[i] / testingTarget[i]
+        if(predictingTarget[i] < actualTarget[i]):
+            percent = predictingTarget[i] / actualTarget[i]
         else:    
-            percent = testingTarget[i] / predictingTarget[i] 
-        print("{} \t{}\t\t{}\t\t{}".format(predictingSample[i], predictingTarget[i], testingTarget[i], percent))
+            percent = actualTarget[i] / predictingTarget[i] 
+        print("{}  {}\t\t\t{}\t\t{}".format(predictingSample[i], predictingTarget[i], actualTarget[i], percent))
         total += percent
     accuracy = total/size
 
@@ -23,11 +23,14 @@ def svrPrediction(sampleList, targetList, predictingSampleList):
     from sklearn import svm
     X = sampleList
     y = targetList
+    
+    ####
     svr_rbf = svm.SVR(kernel='rbf', C=1e3, gamma=0.1)
     y_rbf = svr_rbf.fit(X, y).predict(predictingSampleList)
     y_rbf = [int(round(x)) for x in y_rbf]
+    ###
 
-    #use for graphign to show trace of training model
+    #use for graphing to show trace of training model
     y_modelTraining = svr_rbf.fit(X, y).predict(sampleList)
 
     return y_rbf, y_modelTraining
@@ -110,7 +113,7 @@ def main():
     #getting user input for model training and prediction 
     #variables: frmMth, frmYr, toMth, toYr, nextMths
     print("Dataset start from 01-2007 to 10-2018")
-    print("Enter desired length for model training serperated by space:")
+    print("Enter a desired length for model training serperated by space:")
     user_input = input("From month year to month year:")
     user_input = user_input.split()
     if(len(user_input) != 4):
