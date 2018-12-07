@@ -1,7 +1,10 @@
 import sys
-from operator import itemgetter
 
 def printResult(predictingSample, predictingTarget, actualTarget):
+    """
+    print out the sale prediction and its corresponding month and year,
+    and the accurracy comparing to the real values.
+    """
     total = 0.0
     size = len(predictingSample)
     print("Sale prediction in {} months: ".format(size))
@@ -20,15 +23,21 @@ def printResult(predictingSample, predictingTarget, actualTarget):
     return accuracy
 
 def svrPrediction(sampleList, targetList, predictingSampleList):
+    """
+        The svr_rbf prediction function that takes in 2D sample list and 1D target list, and return the 1D predicting list.
+    """
     from sklearn import svm
     X = sampleList
     y = targetList
-    svr_rbf = svm.SVR(kernel='rbf', C=1e3, gamma=0.1)
+    svr_rbf = svm.SVR(kernel='rbf', C=1e3, gamma = 'scale')
     y_rbf = svr_rbf.fit(X, y).predict(predictingSampleList)
     y_rbf = [int(round(x)) for x in y_rbf]
     return y_rbf
 
 def extractData(sampleFile):
+    """
+    Given input file, return a 2D list of the sample represeting the month and year and a 1D of the target represeting the sale. 
+    """
     file = open(sampleFile, 'r')
     #skipping heading
     file.readline()
@@ -63,9 +72,7 @@ def main():
         testingActualTarget = target[start:end]
         rbf =  svrPrediction(trainingSample, trainingTarget, predictingSample)
         result = printResult(predictingSample, rbf, testingActualTarget)
-        total += result
-        rank.append([i, result])
-
+        total += result  
 
     print("****Average of K=12 fold cross validation= ", total/k)
 
