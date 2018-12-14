@@ -1,5 +1,6 @@
 import sys
 
+#Prints the individual results of each month of predictions and gets the average accuracy of those predictions
 def printResult(predictingSample, predictingTarget, actualTarget):
     total = 0.0
     size = len(predictingSample)
@@ -18,23 +19,20 @@ def printResult(predictingSample, predictingTarget, actualTarget):
     print("Accuracy between the prediction and the actual sales is: ", accuracy)
 
 
-
-def annPrediction(sampleList, targetList, predictingSampleList):
+#Trains the neural network on the provided training data point's month and year with their actual demand data
+def nnPrediction(sampleList, targetList, predictingSampleList):
     from sklearn.neural_network import MLPRegressor
     X = sampleList
     y = targetList
-    print(predictingSampleList)
-    ####
-    ann = MLPRegressor(hidden_layer_sizes=(200, ), activation='logistic', solver='lbfgs', max_iter=400, alpha=10)
-    ann.fit(X, y)
-    y_ann = ann.predict(predictingSampleList)
-    y_ann = [int(round(x)) for x in y_ann]
-    ###
+
+    nn = MLPRegressor(hidden_layer_sizes=(200, ), activation='logistic', solver='lbfgs', max_iter=400, alpha=5)
+    y_nn = nn.fit(X, y).predict(predictingSampleList)
+    y_nn = [int(round(x)) for x in y_nn]
 
     #use for graphing to show trace of training model
-    y_modelTraining = ann.predict(sampleList)
+    y_modelTraining = nn.fit(X, y).predict(sampleList)
 
-    return y_ann, y_modelTraining
+    return y_nn, y_modelTraining
 
 def plotGraph(trainingSample, trainingTarget, predictingSample, predictingTarget, trainingModelTarget):
     import matplotlib.pyplot as plt
@@ -76,7 +74,7 @@ def splitDataSet(sampleLst, targetLst, frmMth, frmYr, toMth, toYr, nxtMth, testi
     else:
         return trningSample, trningTarget, predictSample
     
-
+#Reads the input demand file and converts it into a 2d array
 def extractData(sampleFile):
     file = open(sampleFile, 'r')
     #skipping heading
@@ -102,6 +100,7 @@ def CheckInput(argvs):
         return False
     return True
 
+#Trains the neural network on the specified training input, and predicts the specified number of future months
 def main():
     #checking input file
     if(not CheckInput(sys.argv)):
@@ -127,17 +126,11 @@ def main():
     #splitting Data set to training sample, training target, prediction sample, and optional testing target 
     trainingSample, trainingTarget, predictingSample, testingTarget = splitDataSet(dataSet, target, frmMth, frmYr, toMth, toYr, nextMths, "test-yes")
     #trainingModelTarget is only for the graph to show the trace of the training model before the prediction
-    predictingTarget, trainingModelTarget = annPrediction(trainingSample, trainingTarget, predictingSample)
+    predictingTarget, trainingModelTarget = nnPrediction(trainingSample, trainingTarget, predictingSample)
 
     # comparing the predicting sale and the actual sale 
     # print the predicting result and accuracy
     printResult(predictingSample, predictingTarget, testingTarget)
-    
-    # print("##training sample(mth-yr): ", trainingSample)
-    # print("##training target(sale): ", trainingTarget)
-    # print("##predicting sample(month-yr): ", predictingSample)
-    # print("##testing target(sale): ", testingTarget)
-    # print("##predictingTarget: ", predictingTarget)
 
     #plotting the training graph, the prediction graph, and the trace of the training model
     plotGraph(trainingSample, trainingTarget, predictingSample,predictingTarget , trainingModelTarget)
