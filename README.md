@@ -5,7 +5,7 @@ Please ensure you have the proper libraries downloaded by following installation
 For running the "prediction" programs for a model:
     1. Download DemandData.txt
     2. Run the program with DemandData.txt
-    3. Input the time span for which will be used as the training data, in the form "Starting month Start year End month End year"
+    3. Input the time span for which will be used as the training data, in the form "StartingMonth StartYear EndMonth EndYear"
         Such input would look like "1 7 12 17" will use data from January 2007 until December 2017 for training
         The data spans from January 2007 until October 2018, so you cannot specify beyond or before that
     4. Input how many months from the end of the training you would like to predict
