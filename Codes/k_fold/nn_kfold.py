@@ -1,6 +1,7 @@
 import sys
 from operator import itemgetter
 
+#Prints the results of each months predictions, and gets the average for the year, which is the fold
 def printResult(predictingSample, predictingTarget, actualTarget):
     total = 0.0
     size = len(predictingSample)
@@ -19,6 +20,7 @@ def printResult(predictingSample, predictingTarget, actualTarget):
     print("Accuracy between the prediction and the actual sales is: ", accuracy)
     return accuracy
 
+#Trains the neural network with the given training dataset and the actual values specified by each fold
 def nnPrediction(sampleList, targetList, predictingSampleList):
     from sklearn.neural_network import MLPRegressor
     X = sampleList
@@ -32,6 +34,7 @@ def nnPrediction(sampleList, targetList, predictingSampleList):
 
     return y_nn
 
+#Reads the input demand dataset and converts it into a 2d array and the y values for demand unit sales
 def extractData(sampleFile):
     file = open(sampleFile, 'r')
     #skipping heading
@@ -51,6 +54,7 @@ def extractData(sampleFile):
     file.close()    
     return sampleList, targetList
 
+#Trains the neural network for each fold, which is 1 year, and then prints the average of all 12 fold results
 def main():
     dataSet, target = extractData(sys.argv[1])
     k=12
