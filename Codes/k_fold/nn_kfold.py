@@ -69,8 +69,8 @@ def main():
         trainingTarget += target[end:]
         predictingSample = dataSet[start:end]
         testingActualTarget = target[start:end]
-        rbf =  annPrediction(trainingSample, trainingTarget, predictingSample)
-        result = printResult(predictingSample, rbf, testingActualTarget)
+        model =  nnPrediction(trainingSample, trainingTarget, predictingSample)
+        result = printResult(predictingSample, model, testingActualTarget)
         total += result
         rank.append([i, result])
 
