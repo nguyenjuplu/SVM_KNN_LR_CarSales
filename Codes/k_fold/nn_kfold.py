@@ -1,7 +1,6 @@
 import sys
 from operator import itemgetter
 
-#Prints each result of the folds
 def printResult(predictingSample, predictingTarget, actualTarget):
     total = 0.0
     size = len(predictingSample)
@@ -20,21 +19,19 @@ def printResult(predictingSample, predictingTarget, actualTarget):
     print("Accuracy between the prediction and the actual sales is: ", accuracy)
     return accuracy
 
-#Creates the neural network
 def nnPrediction(sampleList, targetList, predictingSampleList):
     from sklearn.neural_network import MLPRegressor
     X = sampleList
     y = targetList
 
     ####
-    nn = MLPRegressor(hidden_layer_sizes=(200, ), activation='logistic', solver='lbfgs', max_iter=400, alpha=10)
+    nn = MLPRegressor(hidden_layer_sizes=(200, ), activation='logistic', solver='lbfgs', max_iter=400, alpha=5)
     y_nn = nn.fit(X, y).predict(predictingSampleList)
     y_nn = [int(round(x)) for x in y_nn]
     ###
 
     return y_nn
 
-#Takes the given data from the text file and convert it into our 2d array
 def extractData(sampleFile):
     file = open(sampleFile, 'r')
     #skipping heading
@@ -54,7 +51,6 @@ def extractData(sampleFile):
     file.close()    
     return sampleList, targetList
 
-#Performs the k-Fold for each of the 12 years with the other 11 a training, and gives you the average of the 12 resuts
 def main():
     dataSet, target = extractData(sys.argv[1])
     k=12
