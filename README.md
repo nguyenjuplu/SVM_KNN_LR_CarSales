@@ -1,6 +1,9 @@
 Please ensure you have the proper libraries downloaded by following installation instructions on their sites:
     https://scikit-learn.org/stable/install.html
     https://matplotlib.org/users/installing.html
+
+This is the link where we received our data for monthly sales on Renault's Clio model:
+    https://group.renault.com/en/finance-2/financial-information/key-figures/monthly-sales/
     
 For running the "prediction" programs for a model:
     1. Download DemandData.txt
